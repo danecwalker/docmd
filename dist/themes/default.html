@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Docmd - title</title>
+  <title>Docmd - default</title>
   <meta name="description" content="">
 
   <style>
@@ -65,7 +65,7 @@
           </li>
           <li class="nav-section-link">
             <a href="/configuration/title">
-              <div id="current">
+              <div >
                 title</div>
             </a>
           </li>
@@ -120,7 +120,7 @@
           <li class="nav-section-heading font-bold px-4 pb-2">Themes</li>
           <li class="nav-section-link">
             <a href="/themes/default">
-              <div >
+              <div id="current">
                 default</div>
             </a>
           </li>
@@ -134,18 +134,29 @@
       </div>
       <div class="main">
         <main class="md">
-          <h1 id="title">title</h1>
-<p>The <code>title</code> property in the <code>docmd.config.json</code> file is used to set the title of the documentation. The title is displayed in the header of the documentation and is used as the title of the HTML document.</p>
-<p>The <code>title</code> property is a string and is required in the configuration file.</p>
+          <h1 id="default">Default</h1>
 <pre class="chroma"><code><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;$schema&#34;</span><span class="p">:</span> <span class="s2">&#34;https://raw.githubusercontent.com/danecwalker/docmd/main/schemas/docmd.schema.json&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;title&#34;</span><span class="p">:</span> <span class="s2">&#34;Docmd&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="err">...</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;#2b2b2b&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;textMuted&#34;</span><span class="p">:</span> <span class="s2">&#34;#575757&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;background&#34;</span><span class="p">:</span> <span class="s2">&#34;#ffffff&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;backgroundHover&#34;</span><span class="p">:</span> <span class="s2">&#34;#f5f5f5&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;link&#34;</span><span class="p">:</span> <span class="s2">&#34;#4d6aff&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;border&#34;</span><span class="p">:</span> <span class="s2">&#34;#ededed&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;code&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;foreground&#34;</span><span class="p">:</span> <span class="s2">&#34;#000000&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;background&#34;</span><span class="p">:</span> <span class="s2">&#34;#fafafa&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;keyword&#34;</span><span class="p">:</span> <span class="s2">&#34;#a626a4&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;builtin&#34;</span><span class="p">:</span> <span class="s2">&#34;#c18401&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;named&#34;</span><span class="p">:</span> <span class="s2">&#34;#4078f2&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;namedOther&#34;</span><span class="p">:</span> <span class="s2">&#34;#e45649&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;string&#34;</span><span class="p">:</span> <span class="s2">&#34;#50a14f&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;number&#34;</span><span class="p">:</span> <span class="s2">&#34;#c18401&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;operator&#34;</span><span class="p">:</span> <span class="s2">&#34;#a626a4&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;punctuation&#34;</span><span class="p">:</span> <span class="s2">&#34;#000000&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;#a0a1a7&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre><div style="display: flex; justify-content: space-between; margin-top: 2rem;">
-  <a href="/configuration/docmd_config_json" style="margin-left: 16px;">← docmd.config.json</a>
-  <a href="/configuration/description" style="margin-right: 16px;">description →</a>
-</div>
+</span></span></code></pre>
         </main>
       </div>
     </div>

@@ -22,8 +22,8 @@ docmd
 
 There are a few commands that can be used to generate the documentation:
 
-- `docmd build` - Build the documentation
-- `docmd serve` - Serve the documentation locally
+- `build` - Build the documentation
+- `serve` - Serve the documentation locally
 
 To build the documentation, run the following command:
 

@@ -1,5 +1,5 @@
 {
-  "$schema": "../../schemas/config.json",
+  "$schema": "../../schemas/docmd.schema.json",
   "title": "Docmd",
   "description": "A simple documentation generator for markdown files",
   "domain": "https://www.imdb.com",
@@ -48,8 +48,14 @@
     {
       "title": "outDir",
       "path": "/configuration/outDir.md"
+    },
+    {
+      "title": "default",
+      "path": "/themes/default.md"
+    },
+    {
+      "title": "solarized-light",
+      "path": "/themes/solarized-light.md"
     }
-  ],
-  "entry": "index.md",
-  "error": "error.md"
+  ]
 }

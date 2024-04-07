@@ -39,7 +39,7 @@
 }
 
 .md a {
-  color: rgb(77, 107, 255);
+  color: hsl(var(--color-link));
   text-decoration: none;
 }
 

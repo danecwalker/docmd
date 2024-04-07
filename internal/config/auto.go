@@ -46,6 +46,10 @@ func autoFillConfig(c *Config) {
 		c.Errors.Internal.Path = "# 500 - Internal Server Error\n\nAn error occurred while processing your request."
 	}
 
+	if c.Theme == nil {
+		c.Theme = "default"
+	}
+
 	c.Entry = path.Join(c.InDir, c.Entry)
 
 	if strings.HasSuffix(c.Errors.NotFound.Path, ".md") {

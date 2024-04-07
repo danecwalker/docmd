@@ -1,12 +1,14 @@
 package build
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path"
 	"strings"
 	"text/template"
 
+	"github.com/danecwalker/docmd/internal/colors"
 	"github.com/danecwalker/docmd/internal/config"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -39,6 +41,7 @@ type P struct {
 }
 
 type C struct {
+	Theme         string
 	Page          P
 	SidebarGroups []string
 	Sidebar       map[string][]L
@@ -86,6 +89,49 @@ func BuildJSON(configPath string) error {
 		if err != nil {
 			return err
 		}
+	}
+
+	var theme colors.Theme
+	switch v := c.Theme.(type) {
+	case string:
+		if _, ok := colors.BuiltInThemes[v]; !ok {
+			if _, err := os.Stat(path.Join(c.InDir, v)); os.IsNotExist(err) {
+				return fmt.Errorf("theme file not found: %s", v)
+			}
+
+			content, err := os.ReadFile(path.Join(c.InDir, v))
+			if err != nil {
+				return err
+			}
+
+			err = json.Unmarshal(content, &theme)
+			if err != nil {
+				return err
+			}
+			theme = theme.Merge(colors.BuiltInThemes["default"])
+		} else {
+			theme = colors.BuiltInThemes[v]
+		}
+	case map[string]interface{}:
+		raw, err := json.Marshal(v)
+		if err != nil {
+			return err
+		}
+		err = json.Unmarshal(raw, &theme)
+		if err != nil {
+			return err
+		}
+		theme = theme.Merge(colors.BuiltInThemes["default"])
+	default:
+		return fmt.Errorf("unsupported theme type: %T", v)
+	}
+
+	b, _ := json.MarshalIndent(theme, "", "  ")
+	fmt.Println(string(b))
+
+	themeCss, err := theme.ToCSS()
+	if err != nil {
+		return err
 	}
 
 	writeStyles(c)
@@ -168,6 +214,7 @@ func BuildJSON(configPath string) error {
 	}
 
 	err = t.Execute(f, C{
+		Theme:         themeCss,
 		Page:          indexPage,
 		SidebarGroups: gs,
 		Sidebar:       gss,
@@ -197,6 +244,7 @@ func BuildJSON(configPath string) error {
 	}
 
 	err = t.Execute(f, C{
+		Theme:         themeCss,
 		Page:          notFound,
 		SidebarGroups: gs,
 		Sidebar:       gss,
@@ -226,6 +274,7 @@ func BuildJSON(configPath string) error {
 	}
 
 	err = t.Execute(f, C{
+		Theme:         themeCss,
 		Page:          internalError,
 		SidebarGroups: gs,
 		Sidebar:       gss,
@@ -258,6 +307,7 @@ func BuildJSON(configPath string) error {
 		}
 
 		err = t.Execute(f, C{
+			Theme:         themeCss,
 			Page:          page,
 			SidebarGroups: gs,
 			Sidebar:       gss,

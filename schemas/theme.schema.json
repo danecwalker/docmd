@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/danecwalker/docmd/main/schemas/theme.schema.json",
+  "title": "Docmd Theme Schema",
+  "description": "The schema for a docmd theme",
+  "type": ["string", "object"],
+  "properties": {
+    "text": {
+      "description": "The text color of the documentation",
+      "type": "string",
+      "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+    },
+    "textMuted": {
+      "description": "The muted text color of the documentation",
+      "type": "string",
+      "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+    },
+    "background": {
+      "description": "The background color of the documentation",
+      "type": "string",
+      "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+    },
+    "backgroundHover": {
+      "description": "The background hover color of the documentation",
+      "type": "string",
+      "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+    },
+    "link": {
+      "description": "The link color of the documentation",
+      "type": "string",
+      "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+    },
+    "border": {
+      "description": "The border color of the documentation",
+      "type": "string",
+      "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+    },
+    "code": {
+      "description": "The code color of the documentation",
+      "type": "object",
+      "properties": {
+        "foreground": {
+          "description": "The code foreground color of the documentation",
+          "type": "string",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "background": {
+          "description": "The code background color of the documentation",
+          "type": "string",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "keyword": {
+          "description": "The code keyword color of the documentation",
+          "type": "string",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "builtin": {
+          "description": "The code builtin color of the documentation",
+          "type": "string",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "named": {
+          "description": "The code named color of the documentation",
+          "type": "string",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "namedOther": {
+          "description": "The code named other color of the documentation",
+          "type": "string",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "string": {
+          "description": "The code string color of the documentation",
+          "type": "string",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "number": {
+          "description": "The code number color of the documentation",
+          "type": "string",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "operator": {
+          "description": "The code operator color of the documentation",
+          "type": "string",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "punctuation": {
+          "description": "The code punctuation color of the documentation",
+          "type": "string",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "comment": {
+          "description": "The code comment color of the documentation",
+          "type": "string",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        }
+      }
+    }
+  }
+}

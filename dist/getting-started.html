@@ -8,44 +8,26 @@
   <meta name="description" content="">
 
   <style>
-    :root {
-      /* text color */
-      --color-text: 0, 0%, 17%;
-      /* text color muted */
-      --color-text-muted: 0, 0%, 34%;
-      /* background color */
-      --color-background: 100, 100%, 100%;
-      /* hover color */
-      --color-background-hover: 0, 0%, 96%;
-      /* links color */
-      --color-link: 0, 0%, 100%;
-      /* border color */
-      --color-border: 0, 0%, 93%;
+	:root {
+		--color-text: 0 0% 17%;
+		--color-text-muted: 0 0% 34%;
+		--color-background: 0 0% 100%;
+		--color-background-hover: 0 0% 96%;
+		--color-link: 221 87% 60%;
+		--color-border: 0 0% 93%;
 
-      /* Foreground */
-      --color-code-foreground: 0, 0%, 0%;
-      /* Background */
-      --color-code-background: 0, 0%, 98%;
-      /* Code keyword */
-      --color-code-keyword: 301, 63%, 40%;
-      /* Code Builtin */
-      --color-code-builtin: 41, 99%, 38%;
-      /* Code Named */
-      --color-code-named: 221, 87%, 60%;
-      /* Code Named Other */
-      --color-code-named-other: 5, 74%, 59%;
-      /* Code String */
-      --color-code-string: 119, 34%, 47%;
-      /* Code Number */
-      --color-code-number: 119, 34%, 47%;
-      /* Code Operators */
-      --color-code-operator: 301, 63%, 40%;
-      /* Code Punctuation */
-      --color-code-punctuation: 0, 0%, 0%;
-      /* Code Comment */
-      --color-code-comment: 230, 4%, 64%;
-    }
-  </style>
+		--color-code-foreground: 0 0% 0%;
+		--color-code-background: 0 0% 98%;
+		--color-code-keyword: 301 63% 40%;
+		--color-code-builtin: 41 99% 38%;
+		--color-code-named: 221 87% 60%;
+		--color-code-named-other: 5 74% 59%;
+		--color-code-string: 119 34% 47%;
+		--color-code-number: 41 99% 38%;
+		--color-code-operator: 301 63% 40%;
+		--color-code-punctuation: 0 0% 0%;
+		--color-code-comment: 231 4% 64%;
+	}</style>
   <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="/markdown.css" />
   <script src="/copy.js" defer></script>
@@ -135,6 +117,19 @@
                 outDir</div>
             </a>
           </li>
+          <li class="nav-section-heading font-bold px-4 pb-2">Themes</li>
+          <li class="nav-section-link">
+            <a href="/themes/default">
+              <div >
+                default</div>
+            </a>
+          </li>
+          <li class="nav-section-link">
+            <a href="/themes/solarized-light">
+              <div >
+                solarized-light</div>
+            </a>
+          </li>
           </ul>
       </div>
       <div class="main">
@@ -153,8 +148,8 @@
 <pre class="chroma"><code><span class="line"><span class="cl">docmd
 </span></span></code></pre><p>There are a few commands that can be used to generate the documentation:</p>
 <ul>
-<li><code>docmd build</code> - Build the documentation</li>
-<li><code>docmd serve</code> - Serve the documentation locally</li>
+<li><code>build</code> - Build the documentation</li>
+<li><code>serve</code> - Serve the documentation locally</li>
 </ul>
 <p>To build the documentation, run the following command:</p>
 <pre class="chroma"><code><span class="line"><span class="cl">docmd build path/to/docs
