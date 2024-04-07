@@ -14,10 +14,8 @@ func Build(dir string) error {
 
 	switch ext {
 	case config.JSON:
-		BuildJSON(configPath)
+		return BuildJSON(configPath)
 	default:
 		return fmt.Errorf("unsupported config file type: %s", ext)
 	}
-
-	return nil
 }

@@ -1,16 +1,71 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/danecwalker/docmd/blob/development/schemas/config.json",
+  "$id": "https://raw.githubusercontent.com/danecwalker/docmd/development/schemas/config.json",
   "title": "Docmd Config",
   "description": "Configuration for Docmd",
   "type": "object",
   "properties": {
     "title": {
-      "description": "The name of the product",
+      "description": "The tab title for the documentation",
+      "type": "string"
+    },
+    "description": {
+      "description": "A description of the documentation",
+      "type": "string"
+    },
+    "groups": {
+      "description": "Sections of the documentation",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "pages": {
+      "description": "Pages of the documentation",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "The title of the page",
+            "type": "string"
+          },
+          "description": {
+            "description": "A description of the page",
+            "type": "string"
+          },
+          "group": {
+            "description": "The group the page belongs to",
+            "type": "string"
+          },
+          "url": {
+            "description": "The URL of the page",
+            "type": "string"
+          },
+          "path": {
+            "description": "The path to the pages markdown file",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "path",
+          "group"
+        ]
+      }
+    },
+    "entry": {
+      "description": "The entry page of the documentation",
+      "type": "string"
+    },
+    "outDir": {
+      "description": "The output directory for the documentation",
       "type": "string"
     }
   },
   "required": [
-    "title"
+    "title",
+    "description"
   ]
 }

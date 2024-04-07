@@ -10,6 +10,6 @@ func autoFillConfig(c *Config) {
 	}
 
 	if c.Entry == "" {
-		c.Entry = "index.md"
+		c.Entry = "docs/index.md"
 	}
 }

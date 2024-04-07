@@ -1,5 +1,21 @@
 {
-  "$schema": "../../schema/schema.json",
-  "title": "The Big Combo",
-  "description": "A movie about a cop who is trying to take down a mob boss."
+  "$schema": "../../schemas/config.json",
+  "title": "Docmd",
+  "description": "A simple documentation generator for markdown files",
+  "domain": "https://www.imdb.com",
+  
+  "groups": [
+    "Basics"
+  ],
+
+  "pages": [
+    {
+      "title": "Getting Started", 
+      "url": "/getting-started",
+      "path": "/docs/getting-started.md",
+      "group": "Basics"
+    }
+  ],
+
+  "entry": "index.md"
 }
