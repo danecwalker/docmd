@@ -1,5 +1,7 @@
 package config
 
+import "os"
+
 type ConfigExtension string
 
 const (
@@ -9,18 +11,33 @@ const (
 )
 
 type Config struct {
-	Title       string   `json:"title"`
-	Description string   `json:"description"`
-	Groups      []string `json:"groups"`
-	Pages       []Page   `json:"pages"`
-	Entry       string   `json:"entry"`
-	OutDir      string   `json:"outDir"`
+	Title       string `json:"title"`
+	LogoPath    string `json:"logoPath"`
+	Description string `json:"description"`
+	Pages       []Page `json:"pages"`
+	Entry       string `json:"entry"`
+	Errors      Errors `json:"errors"`
+	OutDir      string `json:"outDir"`
+	InDir       string
 }
 
 type Page struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Url         string `json:"url"`
-	Path        string `json:"path"`
-	Group       string `json:"group"`
+	Title       string   `json:"title"`
+	Description string   `json:"description"`
+	Url         string   `json:"url"`
+	Path        string   `json:"path"`
+	Groups      []string `json:"groups"`
+}
+
+type Errors struct {
+	NotFound Page `json:"404"`
+	Internal Page `json:"500"`
+}
+
+func (c *Config) OutputDirExists() bool {
+	if _, err := os.Stat(c.OutDir); os.IsNotExist(err) {
+		return false
+	}
+
+	return true
 }

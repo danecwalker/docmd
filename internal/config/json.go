@@ -5,15 +5,17 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path"
 )
 
-func ParseConfigFromJson(content []byte) (*Config, error) {
+func ParseConfigFromJson(inDir string, content []byte) (*Config, error) {
 	var c Config
 	err := json.Unmarshal(content, &c)
 	if err != nil {
 		return nil, err
 	}
 
+	c.InDir = path.Dir(inDir)
 	autoFillConfig(&c)
 
 	b, _ := json.MarshalIndent(c, "", "  ")
@@ -22,8 +24,8 @@ func ParseConfigFromJson(content []byte) (*Config, error) {
 	return &c, nil
 }
 
-func ParseConfigFromJsonFile(path string) (*Config, error) {
-	f, err := os.Open(path)
+func ParseConfigFromJsonFile(inDir string) (*Config, error) {
+	f, err := os.Open(inDir)
 	if err != nil {
 		return nil, err
 	}
@@ -36,5 +38,5 @@ func ParseConfigFromJsonFile(path string) (*Config, error) {
 		return nil, err
 	}
 
-	return ParseConfigFromJson(content)
+	return ParseConfigFromJson(inDir, content)
 }

@@ -4,33 +4,74 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 	"text/template"
 
 	"github.com/danecwalker/docmd/internal/config"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
-type P struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Group       string `json:"group"`
-	Url         string `json:"url"`
-	Path        string `json:"path"`
+type Set []string
+
+func (s *Set) Contains(v string) bool {
+	for _, i := range *s {
+		if i == v {
+			return true
+		}
+	}
+	return false
 }
 
-type G struct {
-	Name  string `json:"name"`
-	Pages []P    `json:"pages"`
+func (s *Set) Add(v string) {
+	if !s.Contains(v) {
+		*s = append(*s, v)
+	}
+}
+
+type P struct {
+	Title       string   `json:"title"`
+	Description string   `json:"description"`
+	Groups      []string `json:"groups"`
+	Url         string   `json:"url"`
+	Path        string   `json:"path"`
+	C           *config.Config
 }
 
 type C struct {
-	Page    P
-	Content string
+	Page          P
+	SidebarGroups []string
+	Sidebar       map[string][]L
+	Content       string
+}
+
+type L struct {
+	Title string
+	Url   string
+}
+
+func copyFile(src, dst string) error {
+	s, err := os.ReadFile(src)
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile(dst, s, 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func BuildJSON(configPath string) error {
 	c, err := config.ParseConfigFromJsonFile(configPath)
 	if err != nil {
 		return err
+	}
+
+	if c.OutputDirExists() {
+		os.RemoveAll(c.OutDir)
 	}
 
 	err = os.Mkdir(c.OutDir, 0755)
@@ -40,48 +81,81 @@ func BuildJSON(configPath string) error {
 		}
 	}
 
-	groups := make(map[string]G)
+	if c.LogoPath != "" {
+		err = copyFile(path.Join(c.InDir, c.LogoPath), path.Join(c.OutDir, c.LogoPath))
+		if err != nil {
+			return err
+		}
+	}
+
+	writeStyles(c)
+	writeScripts(c)
+
+	pages := make([]P, 0)
+
+	gs := make(Set, 0)
+	gss := make(map[string][]L)
+
+	for _, page := range c.Pages {
+		var g string
+		if len(page.Groups) < 1 {
+			g = "General"
+		} else {
+			g = strings.Join(strings.Split(page.Groups[len(page.Groups)-1], "-"), " ")
+		}
+		gs.Add(g)
+		if _, ok := gss[g]; !ok {
+			gss[g] = make([]L, 0)
+		}
+		gss[g] = append(gss[g], L{
+			Title: page.Title,
+			Url:   page.Url,
+		})
+
+		p := P{
+			Title:       fmt.Sprintf("%s - %s", c.Title, page.Title),
+			Description: page.Description,
+			Url:         page.Url,
+			Path:        page.Path,
+			Groups:      page.Groups,
+			C:           c,
+		}
+
+		pages = append(pages, p)
+	}
 
 	indexPage := P{
 		Title:       c.Title,
 		Description: c.Description,
-		Group:       "",
+		Groups:      []string{},
 		Url:         "/",
 		Path:        c.Entry,
+		C:           c,
 	}
 
-	for _, page := range c.Pages {
-		p := P{
-			Title:       fmt.Sprintf("%s - %s", c.Title, page.Title),
-			Description: page.Description,
-			Group:       page.Group,
-			Url:         page.Url,
-			Path:        page.Path,
-		}
-
-		if page.Group == "" {
-			return fmt.Errorf("page group cannot be empty")
-		}
-
-		if _, ok := groups[page.Group]; !ok {
-			groups[page.Group] = G{
-				Name:  page.Group,
-				Pages: []P{p},
-			}
-		} else {
-			groups[page.Group] = G{
-				Name:  page.Group,
-				Pages: append(groups[page.Group].Pages, p),
-			}
-		}
+	notFound := P{
+		Title:       c.Errors.NotFound.Title,
+		Description: c.Errors.NotFound.Description,
+		Groups:      []string{},
+		Url:         "/404",
+		Path:        c.Errors.NotFound.Path,
+		C:           c,
 	}
 
-	fmt.Println(indexPage)
-	for _, group := range groups {
-		fmt.Println(group)
+	internalError := P{
+		Title:       c.Errors.Internal.Title,
+		Description: c.Errors.Internal.Description,
+		Groups:      []string{},
+		Url:         "/500",
+		Path:        c.Errors.Internal.Path,
+		C:           c,
 	}
 
-	t := template.Must(template.New("base").Parse(indexTemplate))
+	t := template.Must(template.New("base").Funcs(template.FuncMap{
+		"capitalize": func(s string) string {
+			return cases.Title(language.English).String(s)
+		},
+	}).Parse(indexTemplate))
 
 	f, err := os.Create(path.Join(c.OutDir, "index.html"))
 	if err != nil {
@@ -94,8 +168,10 @@ func BuildJSON(configPath string) error {
 	}
 
 	err = t.Execute(f, C{
-		Page:    indexPage,
-		Content: md,
+		Page:          indexPage,
+		SidebarGroups: gs,
+		Sidebar:       gss,
+		Content:       md,
 	})
 	if err != nil {
 		return err
@@ -103,5 +179,97 @@ func BuildJSON(configPath string) error {
 
 	f.Close()
 
+	f, err = os.Create(path.Join(c.OutDir, "404.html"))
+	if err != nil {
+		return err
+	}
+
+	if strings.HasSuffix(notFound.Path, ".md") {
+		md, err = ParseMarkdown(notFound.Path)
+		if err != nil {
+			return err
+		}
+	} else {
+		md, err = ParseMarkdownString(notFound.Path)
+		if err != nil {
+			return err
+		}
+	}
+
+	err = t.Execute(f, C{
+		Page:          notFound,
+		SidebarGroups: gs,
+		Sidebar:       gss,
+		Content:       md,
+	})
+	if err != nil {
+		return err
+	}
+
+	f.Close()
+
+	f, err = os.Create(path.Join(c.OutDir, "500.html"))
+	if err != nil {
+		return err
+	}
+
+	if strings.HasSuffix(internalError.Path, ".md") {
+		md, err = ParseMarkdown(internalError.Path)
+		if err != nil {
+			return err
+		}
+	} else {
+		md, err = ParseMarkdownString(internalError.Path)
+		if err != nil {
+			return err
+		}
+	}
+
+	err = t.Execute(f, C{
+		Page:          internalError,
+		SidebarGroups: gs,
+		Sidebar:       gss,
+		Content:       md,
+	})
+	if err != nil {
+		return err
+	}
+
+	f.Close()
+
+	for _, page := range pages {
+		// make group directories
+		groups := path.Join(page.Groups...)
+		err = os.MkdirAll(path.Join(c.OutDir, groups), 0755)
+		if err != nil {
+			if !os.IsExist(err) {
+				return err
+			}
+		}
+
+		f, err := os.Create(path.Join(c.OutDir, groups, fmt.Sprintf("%s.html", strings.Split(path.Base(page.Path), ".md")[0])))
+		if err != nil {
+			return err
+		}
+
+		md, err := ParseMarkdown(page.Path)
+		if err != nil {
+			return err
+		}
+
+		err = t.Execute(f, C{
+			Page:          page,
+			SidebarGroups: gs,
+			Sidebar:       gss,
+			Content:       md,
+		})
+
+		if err != nil {
+			return err
+		}
+
+		f.Close()
+
+	}
 	return nil
 }

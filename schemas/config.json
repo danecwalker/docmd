@@ -6,20 +6,16 @@
   "type": "object",
   "properties": {
     "title": {
-      "description": "The tab title for the documentation",
+      "description": "The title for the documentation",
+      "type": "string"
+    },
+    "logoPath": {
+      "description": "The logo for the documentation",
       "type": "string"
     },
     "description": {
       "description": "A description of the documentation",
       "type": "string"
-    },
-    "groups": {
-      "description": "Sections of the documentation",
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "uniqueItems": true
     },
     "pages": {
       "description": "Pages of the documentation",
@@ -35,10 +31,6 @@
             "description": "A description of the page",
             "type": "string"
           },
-          "group": {
-            "description": "The group the page belongs to",
-            "type": "string"
-          },
           "url": {
             "description": "The URL of the page",
             "type": "string"
@@ -50,8 +42,7 @@
         },
         "required": [
           "title",
-          "path",
-          "group"
+          "path"
         ]
       }
     },
@@ -59,9 +50,76 @@
       "description": "The entry page of the documentation",
       "type": "string"
     },
+    "errors": {
+      "description": "The error page of the documentation",
+      "type": "object",
+      "properties": {
+        "404": {
+          "description": "The 404 error page",
+          "type": "object",
+          "properties": {
+            "title": {
+              "description": "The title of the 404 error page",
+              "type": "string"
+            },
+            "description": {
+              "description": "A description of the 404 error page",
+              "type": "string"
+            },
+            "path": {
+              "description": "The path to the 404 error page markdown file",
+              "type": "string"
+            }
+          },
+          "required": [
+            "title",
+            "path"
+          ]
+        },
+        "500": {
+          "description": "The 500 error page",
+          "type": "object",
+          "properties": {
+            "title": {
+              "description": "The title of the 500 error page",
+              "type": "string"
+            },
+            "description": {
+              "description": "A description of the 500 error page",
+              "type": "string"
+            },
+            "path": {
+              "description": "The path to the 500 error page markdown file",
+              "type": "string"
+            }
+          },
+          "required": [
+            "title",
+            "path"
+          ]
+        }
+      }
+    },
     "outDir": {
       "description": "The output directory for the documentation",
       "type": "string"
+    },
+    "theme": {
+      "description": "The theme for the documentation",
+      "type": [
+        "string",
+        "object"
+      ],
+      "properties": {
+        "background": {
+          "description": "The background color of the documentation",
+          "type": "string"
+        },
+        "text": {
+          "description": "The text color of the documentation",
+          "type": "string"
+        }
+      }
     }
   },
   "required": [

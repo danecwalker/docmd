@@ -1,12 +1,3 @@
-# Hello World
-this is a simple example
+# Docmd Documentation
 
-```python
-print("Hello World")
-
-def add(a, b):
-    return a + b
-
-if __name__ == "__main__":
-    print(add(1, 2))
-```
+Docmd is a simple documentation generator that uses markdown files to generate a static website. [Get Started →](/getting-started)
