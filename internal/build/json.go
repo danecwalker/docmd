@@ -247,7 +247,7 @@ func BuildJSON(configPath string) error {
 			}
 		}
 
-		f, err := os.Create(path.Join(c.OutDir, groups, fmt.Sprintf("%s.html", strings.Split(path.Base(page.Path), ".md")[0])))
+		f, err := os.Create(path.Join(c.OutDir, groups, fmt.Sprintf("%s.html", strings.Split(path.Base(page.Url), ".md")[0])))
 		if err != nil {
 			return err
 		}

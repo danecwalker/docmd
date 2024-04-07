@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Internal Server Error</title>
-  <meta name="description" content="An error occurred while processing your request.">
+  <title>Docmd - domain</title>
+  <meta name="description" content="">
 
   <style>
     :root {
@@ -95,7 +95,7 @@
           </li>
           <li class="nav-section-link">
             <a href="/configuration/domain">
-              <div >
+              <div id="current">
                 domain</div>
             </a>
           </li>
@@ -139,9 +139,20 @@
       </div>
       <div class="main">
         <main class="md">
-          <h1 id="500---internal-server-error">500 - Internal Server Error</h1>
-<p>An error occurred while processing your request.</p>
-
+          <h1 id="domain">domain</h1>
+<p>The <code>domain</code> property in the <code>docmd.config.json</code> file is used to set the domain where the documentation will be hosted. The domain is used to generate links absolute links to the documentation pages.</p>
+<p>The <code>domain</code> property is a string and is optional in the configuration file.</p>
+<pre class="chroma"><code><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;$schema&#34;</span><span class="p">:</span> <span class="s2">&#34;https://raw.githubusercontent.com/danecwalker/docmd/main/schemas/docmd.schema.json&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;title&#34;</span><span class="p">:</span> <span class="s2">&#34;Docmd&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;A simple documentation generator for markdown files&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;domain&#34;</span><span class="p">:</span> <span class="s2">&#34;https://www.docmd.com&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="err">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre><div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+  <a href="/configuration/description" style="margin-left: 16px;">← description</a>
+  <a href="/configuration/logoPath" style="margin-right: 16px;">logoPath →</a>
+</div>
         </main>
       </div>
     </div>

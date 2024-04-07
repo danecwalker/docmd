@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Docmd - theme</title>
+  <meta name="description" content="">
+
+  <style>
+    :root {
+      /* text color */
+      --color-text: 0, 0%, 17%;
+      /* text color muted */
+      --color-text-muted: 0, 0%, 34%;
+      /* background color */
+      --color-background: 100, 100%, 100%;
+      /* hover color */
+      --color-background-hover: 0, 0%, 96%;
+      /* links color */
+      --color-link: 0, 0%, 100%;
+      /* border color */
+      --color-border: 0, 0%, 93%;
+
+      /* Foreground */
+      --color-code-foreground: 0, 0%, 0%;
+      /* Background */
+      --color-code-background: 0, 0%, 98%;
+      /* Code keyword */
+      --color-code-keyword: 301, 63%, 40%;
+      /* Code Builtin */
+      --color-code-builtin: 41, 99%, 38%;
+      /* Code Named */
+      --color-code-named: 221, 87%, 60%;
+      /* Code Named Other */
+      --color-code-named-other: 5, 74%, 59%;
+      /* Code String */
+      --color-code-string: 119, 34%, 47%;
+      /* Code Number */
+      --color-code-number: 119, 34%, 47%;
+      /* Code Operators */
+      --color-code-operator: 301, 63%, 40%;
+      /* Code Punctuation */
+      --color-code-punctuation: 0, 0%, 0%;
+      /* Code Comment */
+      --color-code-comment: 230, 4%, 64%;
+    }
+  </style>
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/markdown.css" />
+  <script src="/copy.js" defer></script>
+</head>
+
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo">
+        <a href="/">
+          <h1>Docmd</h1></a>
+      </div>
+      <!-- <div class="search">
+        <input type="text" placeholder="Search">
+      </div> -->
+      <div>
+      </div>
+    </header>
+    <div class="content">
+      <div class="sidebar">
+        <ul>
+          <li class="nav-section-heading font-bold px-4 pb-2">General</li>
+          <li class="nav-section-link">
+            <a href="/getting-started">
+              <div >
+                Getting Started</div>
+            </a>
+          </li>
+          <li class="nav-section-heading font-bold px-4 pb-2">Configuration</li>
+          <li class="nav-section-link">
+            <a href="/configuration/docmd_config_json">
+              <div >
+                docmd.config.json</div>
+            </a>
+          </li>
+          <li class="nav-section-link">
+            <a href="/configuration/title">
+              <div >
+                title</div>
+            </a>
+          </li>
+          <li class="nav-section-link">
+            <a href="/configuration/description">
+              <div >
+                description</div>
+            </a>
+          </li>
+          <li class="nav-section-link">
+            <a href="/configuration/domain">
+              <div >
+                domain</div>
+            </a>
+          </li>
+          <li class="nav-section-link">
+            <a href="/configuration/logoPath">
+              <div >
+                logoPath</div>
+            </a>
+          </li>
+          <li class="nav-section-link">
+            <a href="/configuration/theme">
+              <div id="current">
+                theme</div>
+            </a>
+          </li>
+          <li class="nav-section-link">
+            <a href="/configuration/pages">
+              <div >
+                pages</div>
+            </a>
+          </li>
+          <li class="nav-section-link">
+            <a href="/configuration/entry">
+              <div >
+                entry</div>
+            </a>
+          </li>
+          <li class="nav-section-link">
+            <a href="/configuration/errors">
+              <div >
+                errors</div>
+            </a>
+          </li>
+          <li class="nav-section-link">
+            <a href="/configuration/outDir">
+              <div >
+                outDir</div>
+            </a>
+          </li>
+          </ul>
+      </div>
+      <div class="main">
+        <main class="md">
+          <h1 id="theme">theme</h1>
+<p>The <code>theme</code> property in the <code>docmd.config.json</code> file is used to set the name of the theme that will be used to style the documentation.</p>
+<h2 id="built-in-themes">Built-in Themes</h2>
+<p>The <code>theme</code> property can be set to one of the following built-in themes:</p>
+<ul>
+<li><code>default</code></li>
+<li><code>dark</code></li>
+</ul>
+<p>The <code>theme</code> property is a string and is optional in the configuration file.</p>
+<pre class="chroma"><code><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;$schema&#34;</span><span class="p">:</span> <span class="s2">&#34;https://raw.githubusercontent.com/danecwalker/docmd/main/schemas/docmd.schema.json&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;title&#34;</span><span class="p">:</span> <span class="s2">&#34;Docmd&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;A simple documentation generator for markdown files&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;theme&#34;</span><span class="p">:</span> <span class="s2">&#34;default&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="err">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre><h2 id="custom-themes">Custom Themes</h2>
+<p>Custom themes can be created by creating a new theme file. The theme file should be a <code>.json</code> file that contains the theme properties. The path to the theme file should be set as the value of the <code>theme</code> property in the configuration file.</p>
+<pre class="chroma"><code><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;$schema&#34;</span><span class="p">:</span> <span class="s2">&#34;https://raw.githubusercontent.com/danecwalker/docmd/main/schemas/docmd.schema.json&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;title&#34;</span><span class="p">:</span> <span class="s2">&#34;Docmd&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;A simple documentation generator for markdown files&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;theme&#34;</span><span class="p">:</span> <span class="s2">&#34;/path/to/theme.json&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="err">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre><p>Alternatively, the theme properties can be set directly in the <code>theme</code> property in the configuration file.</p>
+<pre class="chroma"><code><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;$schema&#34;</span><span class="p">:</span> <span class="s2">&#34;https://raw.githubusercontent.com/danecwalker/docmd/main/schemas/docmd.schema.json&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;title&#34;</span><span class="p">:</span> <span class="s2">&#34;Docmd&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;A simple documentation generator for markdown files&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;theme&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;primaryColor&#34;</span><span class="p">:</span> <span class="s2">&#34;#007bff&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;secondaryColor&#34;</span><span class="p">:</span> <span class="s2">&#34;#6c757d&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;backgroundColor&#34;</span><span class="p">:</span> <span class="s2">&#34;#f8f9fa&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;textColor&#34;</span><span class="p">:</span> <span class="s2">&#34;#212529&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;linkColor&#34;</span><span class="p">:</span> <span class="s2">&#34;#007bff&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;codeBackgroundColor&#34;</span><span class="p">:</span> <span class="s2">&#34;#f8f9fa&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;codeTextColor&#34;</span><span class="p">:</span> <span class="s2">&#34;#212529&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="err">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre><h2 id="theme-properties">Theme Properties</h2>
+<p>The following properties can be set in a custom theme:</p>
+<ul>
+<li><code>primaryColor</code> - The primary color used in the theme.</li>
+<li><code>secondaryColor</code> - The secondary color used in the theme.</li>
+<li><code>backgroundColor</code> - The background color used in the theme.</li>
+</ul>
+<h2 id="default-theme">Default Theme</h2>
+<p>The default theme is used if no theme is specified in the configuration file.</p>
+<pre class="chroma"><code><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;primaryColor&#34;</span><span class="p">:</span> <span class="s2">&#34;#007bff&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;secondaryColor&#34;</span><span class="p">:</span> <span class="s2">&#34;#6c757d&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;backgroundColor&#34;</span><span class="p">:</span> <span class="s2">&#34;#f8f9fa&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;textColor&#34;</span><span class="p">:</span> <span class="s2">&#34;#212529&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;linkColor&#34;</span><span class="p">:</span> <span class="s2">&#34;#007bff&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;codeBackgroundColor&#34;</span><span class="p">:</span> <span class="s2">&#34;#f8f9fa&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;codeTextColor&#34;</span><span class="p">:</span> <span class="s2">&#34;#212529&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre><div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+  <a href="/configuration/logoPath" style="margin-left: 16px;">← logoPath</a>
+  <a href="/configuration/pages" style="margin-right: 16px;">pages →</a>
+</div>
+        </main>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

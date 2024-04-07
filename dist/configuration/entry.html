@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Internal Server Error</title>
-  <meta name="description" content="An error occurred while processing your request.">
+  <title>Docmd - entry</title>
+  <meta name="description" content="">
 
   <style>
     :root {
@@ -119,7 +119,7 @@
           </li>
           <li class="nav-section-link">
             <a href="/configuration/entry">
-              <div >
+              <div id="current">
                 entry</div>
             </a>
           </li>
@@ -139,9 +139,21 @@
       </div>
       <div class="main">
         <main class="md">
-          <h1 id="500---internal-server-error">500 - Internal Server Error</h1>
-<p>An error occurred while processing your request.</p>
-
+          <h1 id="entry">entry</h1>
+<p>The <code>entry</code> property in the <code>docmd.config.json</code> file is used to set the path to the entry markdown file that will be used as the home page of the documentation. The entry file is the first page that is displayed when the documentation is loaded.</p>
+<p>The <code>entry</code> property is a string and is optional in the configuration file.</p>
+<pre class="chroma"><code><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;$schema&#34;</span><span class="p">:</span> <span class="s2">&#34;https://raw.githubusercontent.com/danecwalker/docmd/main/schemas/docmd.schema.json&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;title&#34;</span><span class="p">:</span> <span class="s2">&#34;Docmd&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;A simple documentation generator for markdown files&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;entry&#34;</span><span class="p">:</span> <span class="s2">&#34;/index.md&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="err">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre><p>The <code>entry</code> property can be set to any markdown file in the documentation. If the <code>entry</code> property is not set, docmd will try to use the <code>index.md</code> file as the entry file.</p>
+<div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+  <a href="/configuration/pages" style="margin-left: 16px;">← pages</a>
+  <a href="/configuration/errors" style="margin-right: 16px;">errors →</a>
+</div>
         </main>
       </div>
     </div>

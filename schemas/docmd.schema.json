@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/danecwalker/docmd/development/schemas/config.json",
+  "$id": "https://raw.githubusercontent.com/danecwalker/docmd/main/schemas/docmd.schema.json",
   "title": "Docmd Config",
   "description": "Configuration for Docmd",
   "type": "object",
@@ -124,6 +124,7 @@
   },
   "required": [
     "title",
-    "description"
+    "description",
+    "pages"
   ]
 }

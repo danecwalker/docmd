@@ -10,6 +10,7 @@ import (
 	highlighting "github.com/yuin/goldmark-highlighting/v2"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
+	"github.com/yuin/goldmark/renderer/html"
 )
 
 func ParseMarkdown(fPath string) (string, error) {
@@ -25,6 +26,7 @@ func ParseMarkdown(fPath string) (string, error) {
 		),
 	)
 	md.Parser().AddOptions(parser.WithAutoHeadingID())
+	md.Renderer().AddOptions(html.WithUnsafe())
 
 	f, err := os.Open(fPath)
 	if err != nil {
