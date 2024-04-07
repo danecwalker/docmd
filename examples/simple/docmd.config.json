@@ -1,3 +1,5 @@
 {
-  "title": "The Big Combo"
+  "$schema": "../../schema/schema.json",
+  "title": "The Big Combo",
+  "description": "A movie about a cop who is trying to take down a mob boss."
 }

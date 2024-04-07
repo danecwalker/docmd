@@ -1,4 +1,4 @@
-{{define "base"}}
+{{- define "base" -}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,11 +6,47 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{.Title}}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html, *, body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    pre  {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      border-radius: .5rem;
+    }
+  </style>
 </head>
 
 <body>
 
+<div style="display: flex; width: 100%; width: 100%; min-height: 100dvh;">
+  <div style="background-color: antiquewhite; flex: 1;"></div>
+  <div style="background-color: gray; flex: 3; padding: 2rem;">
+    <main style="max-width: 800px; width: 100%; margin-inline: auto; display: flex; flex-direction: column; gap: 1rem;">
+      {{ .Content }}
+    </main>
+  </div>
+</div>
 </body>
 
 </html>
-{{end}}
+{{- end -}}

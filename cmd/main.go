@@ -6,9 +6,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/danecwalker/docmd/cmd/build"
-	"github.com/danecwalker/docmd/cmd/serve"
-	"github.com/danecwalker/docmd/internal/doc"
+	"github.com/danecwalker/docmd/internal/build"
+	"github.com/danecwalker/docmd/internal/serve"
 	"github.com/urfave/cli/v2"
 )
 
@@ -50,8 +49,6 @@ Options:
 	{{range .VisibleFlags}}{{.}}
 	{{end}}{{end}}`
 
-	docs := doc.NewDoc("dist")
-
 	app := &cli.App{
 		Name:                 "docmd",
 		Version:              Version,
@@ -79,14 +76,14 @@ Options:
 				Aliases:   []string{"b"},
 				Usage:     "build the docs",
 				Args:      true,
-				ArgsUsage: "./path/to/markdown/files",
+				ArgsUsage: "./path/to/docmd.config.json",
 				Action: func(c *cli.Context) error {
 					mdPath := c.Args().First()
 					if mdPath == "" {
 						cli.ShowAppHelp(c)
-						return cli.Exit("path to markdown files is required", 1)
+						return cli.Exit("path to docmd config file is required", 1)
 					}
-					err := build.Build(docs, mdPath)
+					err := build.Build(mdPath)
 					if err != nil {
 						cli.ShowAppHelp(c)
 						return cli.Exit(err, 1)
@@ -95,9 +92,11 @@ Options:
 				},
 			},
 			{
-				Name:    "serve",
-				Aliases: []string{"s"},
-				Usage:   "serve the docs",
+				Name:      "serve",
+				Aliases:   []string{"s"},
+				Usage:     "serve the docs",
+				Args:      true,
+				ArgsUsage: "./path/to/docmd.config.json",
 				Flags: []cli.Flag{
 					&cli.IntFlag{
 						Name:    "port",
@@ -107,7 +106,13 @@ Options:
 					},
 				},
 				Action: func(c *cli.Context) error {
-					err := serve.Serve(docs, c.Int("port"))
+					mdPath := c.Args().First()
+					if mdPath == "" {
+						cli.ShowAppHelp(c)
+						return cli.Exit("path to docmd config file is required", 1)
+					}
+
+					err := serve.Serve(mdPath, c.Int("port"))
 					if err != nil {
 						cli.ShowAppHelp(c)
 						return cli.Exit(err, 1)
