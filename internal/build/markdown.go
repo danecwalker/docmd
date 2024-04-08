@@ -2,8 +2,10 @@ package build
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"os"
+	"regexp"
 
 	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
 	"github.com/yuin/goldmark"
@@ -13,7 +15,7 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 )
 
-func ParseMarkdown(fPath string) (string, error) {
+func ParseMarkdown(fPath P) (string, error) {
 	var md = goldmark.New(
 		goldmark.WithExtensions(
 			extension.TaskList,
@@ -30,7 +32,7 @@ func ParseMarkdown(fPath string) (string, error) {
 	md.Parser().AddOptions(parser.WithAutoHeadingID())
 	md.Renderer().AddOptions(html.WithUnsafe())
 
-	f, err := os.Open(fPath)
+	f, err := os.Open(fPath.Path)
 	if err != nil {
 		return "", err
 	}
@@ -49,7 +51,15 @@ func ParseMarkdown(fPath string) (string, error) {
 		return "", err
 	}
 
-	return buf.String(), nil
+	// <a href=""></a>, where href is a relative path /path/to not http:// or https://
+	re := regexp.MustCompile(`href="(?P<url>/[^http|https].*?)"`)
+
+	domain := fPath.C.Domain
+	if domain[len(domain)-1] == '/' {
+		domain = domain[:len(domain)-1]
+	}
+
+	return string(re.ReplaceAll(buf.Bytes(), []byte(fmt.Sprintf(`href="%s$url"`, domain)))), nil
 }
 
 func ParseMarkdownString(mdString string) (string, error) {

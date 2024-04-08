@@ -224,6 +224,13 @@ func Builder(c *config.Config, configPath string, hmr bool) error {
 	start2 := time.Now()
 
 	t := template.Must(template.New("base").Funcs(template.FuncMap{
+		"fullUrl": func(url string) string {
+			domain := c.Domain
+			if domain[len(domain)-1] == '/' {
+				domain = domain[:len(domain)-1]
+			}
+			return fmt.Sprintf("%s%s", domain, url)
+		},
 		"capitalize": func(s string) string {
 			return cases.Title(language.English).String(s)
 		},
@@ -234,7 +241,7 @@ func Builder(c *config.Config, configPath string, hmr bool) error {
 		return err
 	}
 
-	md, err := ParseMarkdown(indexPage.Path)
+	md, err := ParseMarkdown(indexPage)
 	if err != nil {
 		return err
 	}
@@ -259,7 +266,7 @@ func Builder(c *config.Config, configPath string, hmr bool) error {
 	}
 
 	if strings.HasSuffix(notFound.Path, ".md") {
-		md, err = ParseMarkdown(notFound.Path)
+		md, err = ParseMarkdown(notFound)
 		if err != nil {
 			return err
 		}
@@ -290,7 +297,7 @@ func Builder(c *config.Config, configPath string, hmr bool) error {
 	}
 
 	if strings.HasSuffix(internalError.Path, ".md") {
-		md, err = ParseMarkdown(internalError.Path)
+		md, err = ParseMarkdown(internalError)
 		if err != nil {
 			return err
 		}
@@ -330,7 +337,7 @@ func Builder(c *config.Config, configPath string, hmr bool) error {
 			return err
 		}
 
-		md, err := ParseMarkdown(page.Path)
+		md, err := ParseMarkdown(page)
 		if err != nil {
 			return err
 		}

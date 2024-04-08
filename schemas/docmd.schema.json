@@ -17,6 +17,10 @@
       "description": "A description of the documentation",
       "type": "string"
     },
+    "domain": {
+      "description": "The domain of the documentation",
+      "type": "string"
+    },
     "pages": {
       "description": "Pages of the documentation",
       "type": "array",
@@ -42,6 +46,7 @@
         },
         "required": [
           "title",
+          "domain",
           "path"
         ]
       }
@@ -104,7 +109,9 @@
       "description": "The output directory for the documentation",
       "type": "string"
     },
-    "theme": {"$ref": "./theme.schema.json"}
+    "theme": {
+      "$ref": "./theme.schema.json"
+    }
   },
   "required": [
     "title",

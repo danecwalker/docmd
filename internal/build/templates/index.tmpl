@@ -21,9 +21,9 @@
   <style id="theme">
     {{- $theme -}}    
   </style>
-  <link rel="stylesheet" href="/styles.css" />
-  <link rel="stylesheet" href="/markdown.css" />
-  <script src="/copy.js" defer></script>
+  <link rel="stylesheet" href="{{fullUrl "/styles.css"}}" />
+  <link rel="stylesheet" href="{{fullUrl "/markdown.css"}}" />
+  <script src="{{fullUrl "/copy.js"}}" defer></script>
 </head>
 
 <body>
@@ -32,7 +32,7 @@
       <div class="logo">
         <a href="/">
           {{if $page.C.LogoPath -}}
-          <img src="{{$page.C.LogoPath}}" alt="{{$page.C.Title}}">
+          <img src="{{fullUrl $page.C.LogoPath}}" alt="{{$page.C.Title}}">
           {{- else -}}
           <h1>{{$page.C.Title}}</h1>
           {{- end -}}
@@ -51,7 +51,7 @@
           <li class="nav-section-heading font-bold px-4 pb-2">{{capitalize $group}}</li>
           {{range $i, $item := index $sidebar $group -}}
           <li class="nav-section-link">
-            <a href="{{$item.Url}}">
+            <a href="{{fullUrl $item.Url}}">
               <div {{ if eq $item.Url $page.Url -}}id="current" {{- end }}>
                 {{$item.Title}}</div>
             </a>
@@ -71,7 +71,7 @@
   {{- if $hmr -}}
   <script>
     (function() {
-      let eventSource = new EventSource('/__hmr');
+      let eventSource = new EventSource('{{fullUrl "/__hmr"}}');
 
       eventSource.onmessage = function(event) {
         let data = JSON.parse(event.data);

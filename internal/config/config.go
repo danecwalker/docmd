@@ -14,6 +14,7 @@ type Config struct {
 	Title       string `json:"title"`
 	LogoPath    string `json:"logoPath"`
 	Description string `json:"description"`
+	Domain      string `json:"domain"`
 	Pages       []Page `json:"pages"`
 	Entry       string `json:"entry"`
 	Errors      Errors `json:"errors"`

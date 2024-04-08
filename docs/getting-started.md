@@ -6,11 +6,7 @@
 
 ## Installation
 
-Install the `docmd` command line tool using `go install`:
-
-```bash
-go install github.com/danecwalker/docmd
-```
+Install the `docmd` command line tool please find the latest release on the [releases page](https://github.com/danecwalker/docmd/releases/) and download the appropriate binary for your operating system.
 
 ## Usage
 
@@ -23,7 +19,8 @@ docmd
 There are a few commands that can be used to generate the documentation:
 
 - `build` - Build the documentation
-- `serve` - Serve the documentation locally
+- `dev` - Serve the documentation locally with hot reloading
+- `preview` - Serve the documentation locally
 
 To build the documentation, run the following command:
 
@@ -34,10 +31,23 @@ docmd build path/to/docs
 To serve the documentation locally, run the following command:
 
 ```bash
-docmd serve path/to/docs # Default port is 4200
+docmd preview path/to/docs # Default port is 4200
 
-docmd serve path/to/docs --port 8080
+docmd preview path/to/docs --port 8080
+
+docmd preview path/to/docs --host # Run on ip address instead of localhost
 ```
+
+To serve the documentation locally with hot reloading, run the following command:
+
+```bash
+docmd dev path/to/docs # Default port is 4200
+
+docmd dev path/to/docs --port 8080
+
+docmd dev path/to/docs --host # Run on ip address instead of localhost
+```
+
 
 ## Configuration
 
