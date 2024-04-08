@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [linux, darwin, windows]
-        arch: [amd64, 386, arm64]
+        arch: [amd64, arm64]
         include:
           - os: windows
             goos: windows
@@ -49,7 +49,7 @@ jobs:
 
     - name: Build
       run: |
-        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.arch }} go build -ldflags "-X github.com/danecwalker/docmd/internal/meta.Version=${{env.VERSION}} -X github.com/danecwalker/docmd/internal/meta.Revision=${{env.REVISION}}" -o docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }}
+        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.arch }} go build -ldflags "-X github.com/danecwalker/docmd/internal/meta.Version=${{env.VERSION}} -X github.com/danecwalker/docmd/internal/meta.Revision=${{env.REVISION}}" -o docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }} ./cmd/docmd
         mv docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }} $GITHUB_WORKSPACE/bin/
 
     - name: Upload Binary
