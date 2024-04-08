@@ -6,7 +6,7 @@
   "textMuted": "#657b83",
   "background": "#fdf6e3",
   "backgroundHover": "#eee8d5",
-  "link": "#268bd2",
+  "link": "#2aa198",
   "border": "#839496",
   "code": {
     "foreground": "#657b83",
@@ -30,7 +30,7 @@
 		--color-text-muted: 196 13% 45%;
 		--color-background: 44 87% 94%;
 		--color-background-hover: 46 42% 88%;
-		--color-link: 205 69% 49%;
+		--color-link: 175 59% 40%;
 		--color-border: 186 8% 55%;
 		--color-code-foreground: 196 13% 45%;
 		--color-code-background: 44 87% 94%;
