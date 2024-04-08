@@ -1,13 +1,16 @@
 package preview
 
 import (
+	"bytes"
 	"fmt"
+	"html/template"
 	"log"
 	"net"
 	"net/http"
 	"os"
 	"path"
 
+	"github.com/danecwalker/docmd/internal/build"
 	"github.com/danecwalker/docmd/internal/config"
 	"github.com/danecwalker/docmd/internal/logger"
 	"github.com/danecwalker/docmd/internal/meta"
@@ -19,11 +22,38 @@ func PreviewJSON(configPath string, port int, expose bool) error {
 		log.Fatal(err)
 	}
 
-	return Serve(c, port, expose)
+	return Serve(c, port, expose, false, nil)
 }
 
-func Serve(c *config.Config, port int, expose bool) error {
+func Serve(c *config.Config, port int, expose bool, hmr bool, events chan string) error {
 	mux := http.NewServeMux()
+
+	if hmr {
+		mux.HandleFunc("/__hmr", func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "text/event-stream")
+			w.Header().Set("Cache-Control", "no-cache")
+			w.Header().Set("Connection", "keep-alive")
+
+			logger.PrintStatusLineKV(logger.Yellow, "[🗲 hmr]", logger.Reset, "connected", logger.Reset, "")
+			for {
+				select {
+				case event := <-events:
+					fmt.Println("event", event)
+					fmt.Fprintf(w, "data: %s\n\n", event)
+					// Flush the response. This is important for SSE to work correctly
+					if flusher, ok := w.(http.Flusher); ok {
+						flusher.Flush()
+					} else {
+						fmt.Println("Error: Streaming unsupported!")
+						return
+					}
+				case <-r.Context().Done():
+					logger.PrintStatusLineKV(logger.Yellow, "[✗ hmr]", logger.Reset, "disconnected", logger.Reset, "")
+					return
+				}
+			}
+		})
+	}
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		methodColor := logger.Green
@@ -46,8 +76,20 @@ func Serve(c *config.Config, port int, expose bool) error {
 
 		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
 
-		ServeFile(w, r, c, p)
+		if os.Getenv("DEV_ERROR") != "" {
+			w.WriteHeader(http.StatusInternalServerError)
+			t := template.Must(template.New("error").Parse(build.ErrorTemplate))
+			var buf bytes.Buffer
+			t.Execute(&buf, struct {
+				Error string
+			}{
+				Error: os.Getenv("DEV_ERROR"),
+			})
 
+			w.Write(buf.Bytes())
+		} else {
+			ServeFile(w, r, c, p)
+		}
 	})
 
 	ip, err := DisplayInfo(port, expose)

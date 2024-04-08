@@ -50,6 +50,7 @@ type C struct {
 	SidebarGroups []string
 	Sidebar       map[string][]L
 	Content       string
+	Hmr           bool
 }
 
 type L struct {
@@ -72,8 +73,8 @@ func copyFile(src, dst string) error {
 }
 
 func BuildJSON(configPath string) error {
-	var c *config.Config
-	if err := Builder(c, configPath); err != nil {
+	var c config.Config
+	if err := Builder(&c, configPath, false); err != nil {
 		return err
 	}
 
@@ -82,7 +83,7 @@ func BuildJSON(configPath string) error {
 	return nil
 }
 
-func Builder(c *config.Config, configPath string) error {
+func Builder(c *config.Config, configPath string, hmr bool) error {
 	c, err := config.ParseConfigFromJsonFile(configPath)
 	if err != nil {
 		return err
@@ -244,6 +245,7 @@ func Builder(c *config.Config, configPath string) error {
 		SidebarGroups: gs,
 		Sidebar:       gss,
 		Content:       md,
+		Hmr:           hmr,
 	})
 	if err != nil {
 		return err
@@ -274,6 +276,7 @@ func Builder(c *config.Config, configPath string) error {
 		SidebarGroups: gs,
 		Sidebar:       gss,
 		Content:       md,
+		Hmr:           hmr,
 	})
 	if err != nil {
 		return err
@@ -304,6 +307,7 @@ func Builder(c *config.Config, configPath string) error {
 		SidebarGroups: gs,
 		Sidebar:       gss,
 		Content:       md,
+		Hmr:           hmr,
 	})
 	if err != nil {
 		return err
@@ -337,6 +341,7 @@ func Builder(c *config.Config, configPath string) error {
 			SidebarGroups: gs,
 			Sidebar:       gss,
 			Content:       md,
+			Hmr:           hmr,
 		})
 
 		if err != nil {

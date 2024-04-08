@@ -11,6 +11,9 @@ import (
 //go:embed templates/index.tmpl
 var indexTemplate string
 
+//go:embed templates/error.tmpl
+var ErrorTemplate string
+
 //go:embed templates/styles.css
 var styles string
 
