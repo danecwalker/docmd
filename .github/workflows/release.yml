@@ -6,6 +6,20 @@ on:
       - main
 
 jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Create Tag
+        run: |
+          TAG=$(cat .version)
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git tag $TAG
+          git push origin $TAG
+          
   build-and-release:
     runs-on: ubuntu-latest
     strategy:
@@ -39,13 +53,6 @@ jobs:
 
     - name: Print Version
       run: echo "Version is $VERSION"
-
-    - name: Create and Push Tag
-      run: |
-        git config --global user.email "action@github.com"
-        git config --global user.name "GitHub Action"
-        git tag $VERSION
-        git push origin $VERSION
 
     - name: Build
       run: |
