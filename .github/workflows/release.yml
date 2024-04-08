@@ -59,31 +59,32 @@ jobs:
         name: docmd-${{ matrix.os }}-${{ matrix.arch }}
         path: ${{ github.workspace }}/bin/docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }}
 
-    - name: Upload Version
-      uses: actions/upload-artifact@v2
-      with:
-        name: version
-        path: .version
-
   create-release-and-upload-assets:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Read Version
+        id: read_version
+        run: |
+          echo "VERSION=$(cat .version)" >> $GITHUB_ENV
+          echo "REVISION=$(git rev-parse HEAD)" >> $GITHUB_ENV
+  
+      - name: Print Version
+        run: echo "Version is $VERSION"
+
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
           path: ${{ github.workspace }}/bin/
 
-      - name: Download Version
-        uses: actions/download-artifact@v2
-        with:
-          name: version
-          path: ${{ github.workspace }}
-    
-      - name: Print Version
+      - name: Files
         run: |
-          echo "VERSION=$(cat ${{ github.workspace }}/.version)" >> $GITHUB_ENV
-          echo "Version is $VERSION"
+          ls -la ${{ github.workspace }}/bin/
+          ls -la ${{ github.workspace }}/bin/docmd-*
+          ls -la ${{ github.workspace }}
 
       - name: Create Release
         id: create_release
