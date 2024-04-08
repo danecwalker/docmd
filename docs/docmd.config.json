@@ -1,0 +1,61 @@
+{
+  "$schema": "../../schemas/docmd.schema.json",
+  "title": "Docmd",
+  "description": "A simple documentation generator for markdown files",
+  "domain": "https://www.imdb.com",
+  "pages": [
+    {
+      "title": "Getting Started",
+      "path": "/getting-started.md"
+    },
+    {
+      "title": "docmd.config.json",
+      "url": "/configuration/docmd_config_json",
+      "path": "/configuration/docmd.config.json.md"
+    },
+    {
+      "title": "title",
+      "path": "/configuration/title.md"
+    },
+    {
+      "title": "description",
+      "path": "/configuration/description.md"
+    },
+    {
+      "title": "domain",
+      "path": "/configuration/domain.md"
+    },
+    {
+      "title": "logoPath",
+      "path": "/configuration/logoPath.md"
+    },
+    {
+      "title": "theme",
+      "path": "/configuration/theme.md"
+    },
+    {
+      "title": "pages",
+      "path": "/configuration/pages.md"
+    },
+    {
+      "title": "entry",
+      "path": "/configuration/entry.md"
+    },
+    {
+      "title": "errors",
+      "path": "/configuration/errors.md"
+    },
+    {
+      "title": "outDir",
+      "path": "/configuration/outDir.md"
+    },
+    {
+      "title": "default",
+      "path": "/themes/default.md"
+    },
+    {
+      "title": "solarized-light",
+      "path": "/themes/solarized-light.md"
+    }
+  ]
+}
