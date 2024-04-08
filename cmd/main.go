@@ -8,20 +8,14 @@ import (
 
 	"github.com/danecwalker/docmd/internal/build"
 	"github.com/danecwalker/docmd/internal/logger"
-	"github.com/danecwalker/docmd/internal/serve"
+	"github.com/danecwalker/docmd/internal/meta"
+	"github.com/danecwalker/docmd/internal/preview"
 	"github.com/urfave/cli/v2"
-)
-
-var (
-	// Version is the version of the application
-	Version string = "0.0.1"
-	// Revision is the git revision of the application
-	Revision string = "HEAD"
 )
 
 func main() {
 	cli.VersionPrinter = func(cCtx *cli.Context) {
-		fmt.Printf("version=%s revision=%s\n", cCtx.App.Version, Revision)
+		fmt.Printf("version=%s revision=%s\n", cCtx.App.Version, meta.Revision)
 	}
 
 	cli.AppHelpTemplate = `{{.Name}} - {{.Usage}}
@@ -59,7 +53,7 @@ Options:
 			}
 		},
 		Name:                 "docmd",
-		Version:              Version,
+		Version:              meta.Version,
 		Copyright:            fmt.Sprintf("(c) %d %s", time.Now().Year(), "docmd"),
 		EnableBashCompletion: true,
 		Authors: []*cli.Author{
@@ -98,9 +92,9 @@ Options:
 				},
 			},
 			{
-				Name:      "serve",
-				Aliases:   []string{"s"},
-				Usage:     "serve the docs",
+				Name:      "preview",
+				Aliases:   []string{"p"},
+				Usage:     "preview the docs",
 				Args:      true,
 				ArgsUsage: "./path/to/docmd.config.json",
 				Flags: []cli.Flag{
@@ -108,7 +102,12 @@ Options:
 						Name:    "port",
 						Aliases: []string{"p"},
 						Value:   4200,
-						Usage:   "port to serve the docs on",
+						Usage:   "port to preview the docs on",
+					},
+					&cli.BoolFlag{
+						Name:  "host",
+						Value: false,
+						Usage: "expose the server to the network",
 					},
 				},
 				Action: func(c *cli.Context) error {
@@ -117,7 +116,7 @@ Options:
 						return cli.Exit("path to docmd config file is required", 1)
 					}
 
-					err := serve.Serve(mdPath, c.Int("port"))
+					err := preview.Preview(mdPath, c.Int("port"), c.Bool("host"))
 					if err != nil {
 						return cli.Exit(err, 1)
 					}

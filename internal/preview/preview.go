@@ -1,4 +1,4 @@
-package serve
+package preview
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"github.com/danecwalker/docmd/internal/config"
 )
 
-func Serve(dir string, port int) error {
+func Preview(dir string, port int, expose bool) error {
 	configPath, ext, err := config.DiscoverConfig(dir)
 	if err != nil {
 		return err
@@ -14,7 +14,7 @@ func Serve(dir string, port int) error {
 
 	switch ext {
 	case config.JSON:
-		return ServeJSON(configPath, port)
+		return PreviewJSON(configPath, port, expose)
 	default:
 		return fmt.Errorf("unsupported config file type: %s", ext)
 	}

@@ -13,6 +13,7 @@ const (
 	Yellow  Color = "\033[33m"
 	Blue    Color = "\033[34m"
 	Magenta Color = "\033[35m"
+	Pink    Color = "\033[95m"
 	Cyan    Color = "\033[36m"
 	White   Color = "\033[37m"
 
@@ -23,6 +24,7 @@ const (
 	BgCyan  Color = "\033[46m"
 	BgBlue  Color = "\033[44m"
 	BgReset Color = "\033[49m"
+	BgGrey  Color = "\033[100m"
 
 	Reset Color = "\033[0m"
 )

@@ -19,7 +19,8 @@ type Config struct {
 	Errors      Errors `json:"errors"`
 	OutDir      string `json:"outDir"`
 	Theme       any    `json:"theme"`
-	InDir       string
+
+	InDir string
 }
 
 type Page struct {
