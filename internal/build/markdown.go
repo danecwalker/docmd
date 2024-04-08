@@ -16,6 +16,8 @@ import (
 func ParseMarkdown(fPath string) (string, error) {
 	var md = goldmark.New(
 		goldmark.WithExtensions(
+			extension.TaskList,
+			extension.Strikethrough,
 			highlighting.NewHighlighting(
 				highlighting.WithFormatOptions(
 					chromahtml.WithClasses(true),
@@ -53,6 +55,8 @@ func ParseMarkdown(fPath string) (string, error) {
 func ParseMarkdownString(mdString string) (string, error) {
 	var md = goldmark.New(
 		goldmark.WithExtensions(
+			extension.TaskList,
+			extension.Strikethrough,
 			highlighting.NewHighlighting(
 				highlighting.WithFormatOptions(
 					chromahtml.WithClasses(true),

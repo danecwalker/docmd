@@ -5,11 +5,15 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 	"text/template"
+	"time"
 
 	"github.com/danecwalker/docmd/internal/colors"
 	"github.com/danecwalker/docmd/internal/config"
+	"github.com/danecwalker/docmd/internal/logger"
+	"github.com/danecwalker/docmd/internal/utils"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -68,6 +72,7 @@ func copyFile(src, dst string) error {
 }
 
 func BuildJSON(configPath string) error {
+	start1 := time.Now()
 	c, err := config.ParseConfigFromJsonFile(configPath)
 	if err != nil {
 		return err
@@ -83,6 +88,10 @@ func BuildJSON(configPath string) error {
 			return err
 		}
 	}
+
+	tmp1, _ := filepath.Abs(c.OutDir)
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.White, "directory:", logger.Blue, tmp1)
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.White, "Collecting build info...", logger.White, "")
 
 	if c.LogoPath != "" {
 		err = copyFile(path.Join(c.InDir, c.LogoPath), path.Join(c.OutDir, c.LogoPath))
@@ -109,6 +118,7 @@ func BuildJSON(configPath string) error {
 				return err
 			}
 			theme = theme.Merge(colors.BuiltInThemes["default"])
+			theme.Name = v
 		} else {
 			theme = colors.BuiltInThemes[v]
 		}
@@ -122,12 +132,12 @@ func BuildJSON(configPath string) error {
 			return err
 		}
 		theme = theme.Merge(colors.BuiltInThemes["default"])
+		theme.Name = "custom"
 	default:
 		return fmt.Errorf("unsupported theme type: %T", v)
 	}
 
-	b, _ := json.MarshalIndent(theme, "", "  ")
-	fmt.Println(string(b))
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.White, "theme:", logger.Blue, fmt.Sprintf("\"%s\"", theme.Name))
 
 	themeCss, err := theme.ToCSS()
 	if err != nil {
@@ -196,6 +206,10 @@ func BuildJSON(configPath string) error {
 		Path:        c.Errors.Internal.Path,
 		C:           c,
 	}
+
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.Green, fmt.Sprintf("✓ Completed in %s", utils.RoundDuration(time.Since(start1))), logger.White, "")
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.White, "Building pages...", logger.White, "")
+	start2 := time.Now()
 
 	t := template.Must(template.New("base").Funcs(template.FuncMap{
 		"capitalize": func(s string) string {
@@ -319,7 +333,12 @@ func BuildJSON(configPath string) error {
 		}
 
 		f.Close()
-
 	}
+
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.White, fmt.Sprintf("%d page(s) built in %s%s%s", len(pages)+3, logger.Bold, utils.RoundDuration(time.Since(start2)), logger.Reset), logger.White, "")
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.Green, fmt.Sprintf("✓ Total time: %s", utils.RoundDuration(time.Since(start1))), logger.White, "")
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.White, fmt.Sprintf("%sComplete!%s", logger.Bold, logger.Reset), logger.White, "")
+	fmt.Println()
+	fmt.Printf("To serve the site, run:\n\n\tdocmd serve %s\n", c.InDir)
 	return nil
 }

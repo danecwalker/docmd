@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/danecwalker/docmd/internal/build"
+	"github.com/danecwalker/docmd/internal/logger"
 	"github.com/danecwalker/docmd/internal/serve"
 	"github.com/urfave/cli/v2"
 )
@@ -50,6 +51,13 @@ Options:
 	{{end}}{{end}}`
 
 	app := &cli.App{
+		ExitErrHandler: func(c *cli.Context, err error) {
+			if err != nil {
+				cli.ShowAppHelp(c)
+				logger.PrintStatusLineKV(logger.Red, "[error]", logger.White, "error:", logger.Red, err.Error())
+				os.Exit(1)
+			}
+		},
 		Name:                 "docmd",
 		Version:              Version,
 		Copyright:            fmt.Sprintf("(c) %d %s", time.Now().Year(), "docmd"),
@@ -80,12 +88,10 @@ Options:
 				Action: func(c *cli.Context) error {
 					mdPath := c.Args().First()
 					if mdPath == "" {
-						cli.ShowAppHelp(c)
 						return cli.Exit("path to docmd config file is required", 1)
 					}
 					err := build.Build(mdPath)
 					if err != nil {
-						cli.ShowAppHelp(c)
 						return cli.Exit(err, 1)
 					}
 					return nil
@@ -108,13 +114,11 @@ Options:
 				Action: func(c *cli.Context) error {
 					mdPath := c.Args().First()
 					if mdPath == "" {
-						cli.ShowAppHelp(c)
 						return cli.Exit("path to docmd config file is required", 1)
 					}
 
 					err := serve.Serve(mdPath, c.Int("port"))
 					if err != nil {
-						cli.ShowAppHelp(c)
 						return cli.Exit(err, 1)
 					}
 					return nil

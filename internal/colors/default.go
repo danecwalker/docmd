@@ -1,6 +1,7 @@
 package colors
 
 var DefaultTheme = Theme{
+	Name:            "default",
 	Text:            "#2b2b2b",
 	TextMuted:       "#575757",
 	Background:      "#ffffff",

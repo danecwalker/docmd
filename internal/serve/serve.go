@@ -14,10 +14,8 @@ func Serve(dir string, port int) error {
 
 	switch ext {
 	case config.JSON:
-		ServeJSON(configPath, port)
+		return ServeJSON(configPath, port)
 	default:
 		return fmt.Errorf("unsupported config file type: %s", ext)
 	}
-
-	return nil
 }

@@ -11,6 +11,7 @@ import (
 )
 
 type Theme struct {
+	Name            string     `json:"name"`
 	Text            string     `json:"text"`
 	TextMuted       string     `json:"textMuted"`
 	Background      string     `json:"background"`

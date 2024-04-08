@@ -2,7 +2,6 @@ package config
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"os"
 	"path"
@@ -17,9 +16,6 @@ func ParseConfigFromJson(inDir string, content []byte) (*Config, error) {
 
 	c.InDir = path.Dir(inDir)
 	autoFillConfig(&c)
-
-	b, _ := json.MarshalIndent(c, "", "  ")
-	fmt.Println(string(b))
 
 	return &c, nil
 }

@@ -8,6 +8,7 @@ import (
 	"path"
 
 	"github.com/danecwalker/docmd/internal/config"
+	"github.com/danecwalker/docmd/internal/logger"
 )
 
 func ServeJSON(configPath string, port int) error {
@@ -30,7 +31,9 @@ func ServeJSON(configPath string, port int) error {
 
 	})
 
-	fmt.Printf("Serving docs on http://localhost:%d\n", port)
+	fmt.Println()
+	fmt.Println()
+	fmt.Printf("%s%s docmd %s%s %s%s%s\n", logger.BgGreen, logger.Bold, logger.Reset, logger.BgReset, logger.Blue, "v1", logger.BgReset)
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", port), mux); err != nil {
 		return err
 	}

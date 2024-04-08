@@ -1,6 +1,7 @@
 package colors
 
 var SolarizedLightTheme = Theme{
+	Name:            "solarized-light",
 	Text:            "#586e75",
 	TextMuted:       "#657b83",
 	Background:      "#fdf6e3",
