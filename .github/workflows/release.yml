@@ -6,21 +6,7 @@ on:
       - main
 
 jobs:
-  create-tag:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Create Tag
-        run: |
-          TAG=$(cat .version)
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-          git tag $TAG
-          git push origin $TAG
-          
-  build-and-release:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -56,10 +42,37 @@ jobs:
 
     - name: Build
       run: |
-        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.arch }} go build -ldflags "-X github.com/danecwalker/docmd/internal/meta.Version=${{env.VERSION}} -X github.com/danecwalker/docmd/internal/meta.Revision=${{env.REVISION}}" -o bin/docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }} ./cmd/docmd
+        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.arch }} go build -ldflags "-X github.com/danecwalker/docmd/internal/meta.Version=${{env.VERSION}} -X github.com/danecwalker/docmd/internal/meta.Revision=${{env.REVISION}}" -o ${{ github.workspace }}/bin/docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }} ./cmd/docmd
 
     - name: Upload Binary
       uses: actions/upload-artifact@v2
       with:
         name: docmd-${{ matrix.os }}-${{ matrix.arch }}
-        path: bin/docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }}
+        path: ${{ github.workspace }}/bin/docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }}
+
+  create-release-and-upload-assets:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: ${{ github.workspace }}/bin/
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: Release ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Binaries to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ github.workspace }}/bin/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
