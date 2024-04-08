@@ -56,11 +56,10 @@ jobs:
 
     - name: Build
       run: |
-        mkdir -p $GITHUB_WORKSPACE/bin
-        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.arch }} go build -ldflags "-X github.com/danecwalker/docmd/internal/meta.Version=${{env.VERSION}} -X github.com/danecwalker/docmd/internal/meta.Revision=${{env.REVISION}}" -o $GITHUB_WORKSPACE/bin/docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }} ./cmd/docmd
+        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.arch }} go build -ldflags "-X github.com/danecwalker/docmd/internal/meta.Version=${{env.VERSION}} -X github.com/danecwalker/docmd/internal/meta.Revision=${{env.REVISION}}" -o bin/docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }} ./cmd/docmd
 
     - name: Upload Binary
       uses: actions/upload-artifact@v2
       with:
         name: docmd-${{ matrix.os }}-${{ matrix.arch }}
-        path: $GITHUB_WORKSPACE/bin/docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }}
+        path: bin/docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }}
