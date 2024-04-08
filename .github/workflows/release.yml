@@ -51,6 +51,7 @@ jobs:
     - name: Build
       run: |
         GOOS=${{ matrix.goos }} GOARCH=${{ matrix.arch }} go build -ldflags "-X github.com/danecwalker/docmd/internal/meta.Version=${{env.VERSION}} -X github.com/danecwalker/docmd/internal/meta.Revision=${{env.REVISION}}" -o ${{ github.workspace }}/bin/docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }} ./cmd/docmd
+        echo "Built ${{ github.workspace }}/bin/docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }}"
 
     - name: Upload Binary
       uses: actions/upload-artifact@v2
@@ -92,6 +93,7 @@ jobs:
           name: ${{ env.VERSION }}
           draft: false
           prerelease: false
-          files: ${{ github.workspace }}/bin/*
+          files: |
+            ${{ github.workspace }}/bin/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
