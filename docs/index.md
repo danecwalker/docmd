@@ -14,6 +14,7 @@ Docmd is a simple documentation generator that uses markdown files to generate a
 - [x] ~~Add support for custom error pages.~~
 - [x] ~~Add support for custom themes.~~
 - [x] ~~Add support for hot reloading.~~
+- [ ] Add mobile support.
 - [ ] Add support for automatic routing.
 - [ ] Add support for search functionality.
 - [ ] Add support for custom templates.
