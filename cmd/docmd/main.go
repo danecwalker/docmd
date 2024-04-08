@@ -16,7 +16,7 @@ import (
 
 func main() {
 	cli.VersionPrinter = func(cCtx *cli.Context) {
-		fmt.Printf("version=%s revision=%s\n", cCtx.App.Version, meta.Revision)
+		fmt.Printf("docmd\nversion=%s revision=%s\n", cCtx.App.Version, meta.Revision)
 	}
 
 	cli.AppHelpTemplate = `{{.Name}} - {{.Usage}}

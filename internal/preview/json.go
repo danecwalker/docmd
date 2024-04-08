@@ -38,7 +38,6 @@ func Serve(c *config.Config, port int, expose bool, hmr bool, events chan string
 			for {
 				select {
 				case event := <-events:
-					fmt.Println("event", event)
 					fmt.Fprintf(w, "data: %s\n\n", event)
 					// Flush the response. This is important for SSE to work correctly
 					if flusher, ok := w.(http.Flusher); ok {

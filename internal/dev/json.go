@@ -76,6 +76,11 @@ func DevJSON(configPath string, port int, expose bool) error {
 		}
 	}()
 
+	err = watcher.Add(c.InDir)
+	if err != nil {
+		return err
+	}
+
 	// Add a path.
 	glob, err := filepath.Glob(path.Join(c.InDir, "*"))
 	if err != nil {

@@ -1,0 +1,42 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.18'
+
+    - name: Read Version
+      id: read_version
+      run: echo "VERSION=$(cat .version)" >> $GITHUB_ENV
+
+    - name: Print Version
+      run: echo "Version is $VERSION"
+
+    - name: Create and Push Tag
+      run: |
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git tag $VERSION
+        git push origin $VERSION
+
+    - name: Build with Makefile
+      run: |
+        make build VERSION=${{ env.VERSION }}
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: binaries
+        path: bin/*
