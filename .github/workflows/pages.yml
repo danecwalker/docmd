@@ -33,12 +33,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: docs
 
       - name: Setup Docmd
         run: |
-          curl -L "https://github.com/danecwalker/docmd/releases/download/$(git describe --tags $(git rev-list --tags --max-count=1))/docmd-linux-amd64" > docmd
+          echo "DOCMD_VERSION=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
+          echo "Getting docmd-linux-amd64 from GitHub Releases ($DOCMD_VERSION)..."
+          curl -L "https://github.com/danecwalker/docmd/releases/download/$DOCMD_VERSION/docmd-linux-amd64" > docmd
           chmod +x docmd
           sudo mv docmd /usr/local/bin
 
