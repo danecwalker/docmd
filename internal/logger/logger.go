@@ -36,3 +36,7 @@ func PrintStatusLineKV(color1 Color, process string, color2 Color, tag string, c
 	fmt.Printf("%s%s%s ", color2, tag, Reset)
 	fmt.Printf("%s%s%s\n", color3, value, Reset)
 }
+
+func ClearScreen() {
+	fmt.Print("\033[H\033[2J")
+}

@@ -19,6 +19,10 @@ func PreviewJSON(configPath string, port int, expose bool) error {
 		log.Fatal(err)
 	}
 
+	return Serve(c, port, expose)
+}
+
+func Serve(c *config.Config, port int, expose bool) error {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -40,17 +44,32 @@ func PreviewJSON(configPath string, port int, expose bool) error {
 			p += ".html"
 		}
 
+		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+
 		ServeFile(w, r, c, p)
 
 	})
 
+	ip, err := DisplayInfo(port, expose)
+	if err != nil {
+		return err
+	}
+
+	if err := http.ListenAndServe(fmt.Sprintf("%s:%d", ip, port), mux); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func DisplayInfo(port int, expose bool) (ip string, err error) {
 	// get ip address
-	ip := "localhost"
+	ip = "localhost"
 
 	if expose {
 		netInterfaceAddresses, err := net.InterfaceAddrs()
 		if err != nil {
-			log.Fatal(err)
+			return "", err
 		}
 
 		for _, addr := range netInterfaceAddresses {
@@ -71,11 +90,8 @@ func PreviewJSON(configPath string, port int, expose bool) error {
 	if expose {
 		ip = ""
 	}
-	if err := http.ListenAndServe(fmt.Sprintf("%s:%d", ip, port), mux); err != nil {
-		return err
-	}
 
-	return nil
+	return ip, nil
 }
 
 func ServeFile(w http.ResponseWriter, r *http.Request, c *config.Config, p string) {

@@ -72,12 +72,23 @@ func copyFile(src, dst string) error {
 }
 
 func BuildJSON(configPath string) error {
-	start1 := time.Now()
+	var c *config.Config
+	if err := Builder(c, configPath); err != nil {
+		return err
+	}
+
+	fmt.Println()
+	fmt.Printf("To serve the site, run:\n\n\tdocmd serve %s\n", c.InDir)
+	return nil
+}
+
+func Builder(c *config.Config, configPath string) error {
 	c, err := config.ParseConfigFromJsonFile(configPath)
 	if err != nil {
 		return err
 	}
 
+	start1 := time.Now()
 	if c.OutputDirExists() {
 		os.RemoveAll(c.OutDir)
 	}
@@ -90,8 +101,8 @@ func BuildJSON(configPath string) error {
 	}
 
 	tmp1, _ := filepath.Abs(c.OutDir)
-	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.White, "directory:", logger.Blue, tmp1)
-	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.White, "Collecting build info...", logger.White, "")
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.Reset, "directory:", logger.Blue, tmp1)
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.Reset, "Collecting build info...", logger.Reset, "")
 
 	if c.LogoPath != "" {
 		err = copyFile(path.Join(c.InDir, c.LogoPath), path.Join(c.OutDir, c.LogoPath))
@@ -137,7 +148,7 @@ func BuildJSON(configPath string) error {
 		return fmt.Errorf("unsupported theme type: %T", v)
 	}
 
-	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.White, "theme:", logger.Blue, fmt.Sprintf("\"%s\"", theme.Name))
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.Reset, "theme:", logger.Blue, fmt.Sprintf("\"%s\"", theme.Name))
 
 	themeCss, err := theme.ToCSS()
 	if err != nil {
@@ -207,8 +218,8 @@ func BuildJSON(configPath string) error {
 		C:           c,
 	}
 
-	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.Green, fmt.Sprintf("✓ Completed in %s", utils.RoundDuration(time.Since(start1))), logger.White, "")
-	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.White, "Building pages...", logger.White, "")
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.Green, fmt.Sprintf("✓ Completed in %s", utils.RoundDuration(time.Since(start1))), logger.Reset, "")
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.Reset, "Building pages...", logger.Reset, "")
 	start2 := time.Now()
 
 	t := template.Must(template.New("base").Funcs(template.FuncMap{
@@ -335,10 +346,8 @@ func BuildJSON(configPath string) error {
 		f.Close()
 	}
 
-	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.White, fmt.Sprintf("%d page(s) built in %s%s%s", len(pages)+3, logger.Bold, utils.RoundDuration(time.Since(start2)), logger.Reset), logger.White, "")
-	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.Green, fmt.Sprintf("✓ Total time: %s", utils.RoundDuration(time.Since(start1))), logger.White, "")
-	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.White, fmt.Sprintf("%sComplete!%s", logger.Bold, logger.Reset), logger.White, "")
-	fmt.Println()
-	fmt.Printf("To serve the site, run:\n\n\tdocmd serve %s\n", c.InDir)
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.Reset, fmt.Sprintf("%d page(s) built in %s%s%s", len(pages)+3, logger.Bold, utils.RoundDuration(time.Since(start2)), logger.Reset), logger.Reset, "")
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.Green, fmt.Sprintf("✓ Total time: %s", utils.RoundDuration(time.Since(start1))), logger.Reset, "")
+	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.Reset, fmt.Sprintf("%sComplete!%s", logger.Bold, logger.Reset), logger.Reset, "")
 	return nil
 }

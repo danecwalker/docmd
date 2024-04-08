@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/danecwalker/docmd/internal/build"
+	"github.com/danecwalker/docmd/internal/dev"
 	"github.com/danecwalker/docmd/internal/logger"
 	"github.com/danecwalker/docmd/internal/meta"
 	"github.com/danecwalker/docmd/internal/preview"
@@ -48,7 +49,7 @@ Options:
 		ExitErrHandler: func(c *cli.Context, err error) {
 			if err != nil {
 				cli.ShowAppHelp(c)
-				logger.PrintStatusLineKV(logger.Red, "[error]", logger.White, "error:", logger.Red, err.Error())
+				logger.PrintStatusLineKV(logger.Red, "[error]", logger.Reset, "error:", logger.Red, err.Error())
 				os.Exit(1)
 			}
 		},
@@ -117,6 +118,38 @@ Options:
 					}
 
 					err := preview.Preview(mdPath, c.Int("port"), c.Bool("host"))
+					if err != nil {
+						return cli.Exit(err, 1)
+					}
+					return nil
+				},
+			},
+			{
+				Name:      "dev",
+				Aliases:   []string{"d"},
+				Usage:     "start the dev server",
+				Args:      true,
+				ArgsUsage: "./path/to/docmd.config.json",
+				Flags: []cli.Flag{
+					&cli.IntFlag{
+						Name:    "port",
+						Aliases: []string{"p"},
+						Value:   4200,
+						Usage:   "port to preview the docs on",
+					},
+					&cli.BoolFlag{
+						Name:  "host",
+						Value: false,
+						Usage: "expose the server to the network",
+					},
+				},
+				Action: func(c *cli.Context) error {
+					mdPath := c.Args().First()
+					if mdPath == "" {
+						return cli.Exit("path to docmd config file is required", 1)
+					}
+
+					err := dev.Preview(mdPath, c.Int("port"), c.Bool("host"))
 					if err != nil {
 						return cli.Exit(err, 1)
 					}
