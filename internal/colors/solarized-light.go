@@ -6,7 +6,7 @@ var SolarizedLightTheme = Theme{
 	TextMuted:       "#657b83",
 	Background:      "#fdf6e3",
 	BackgroundHover: "#eee8d5",
-	Link:            "#268bd2",
+	Link:            "#2aa198",
 	Border:          "#839496",
 	Code: CodeColors{
 		Foreground:  "#657b83",

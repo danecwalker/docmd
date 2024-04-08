@@ -224,3 +224,15 @@ input[type="checkbox"]:checked:before {
   margin-inline: auto;
   padding: 2rem 0;
 }
+
+.footer {
+  position: fixed;
+  bottom: 1rem;
+  right: 2rem;
+  font-size: 0.875rem;
+  color: hsla(var(--color-text-muted) / 0.6);
+}
+
+.footer > a {
+  color: hsl(var(--color-link));
+}

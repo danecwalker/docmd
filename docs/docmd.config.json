@@ -2,7 +2,7 @@
   "$schema": "../../schemas/docmd.schema.json",
   "title": "Docmd",
   "description": "A simple documentation generator for markdown files",
-  "domain": "https://danecwalker.github.io/docmd/",
+  "domain": "/",
   "pages": [
     {
       "title": "Getting Started",
