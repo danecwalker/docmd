@@ -53,7 +53,7 @@ jobs:
     - name: Upload Version
       uses: actions/upload-artifact@v2
       with:
-        name: version
+        name: .version
         path: ${{ github.workspace }}/.version
 
   create-release-and-upload-assets:
@@ -68,12 +68,12 @@ jobs:
       - name: Download Version
         uses: actions/download-artifact@v2
         with:
-          name: version
-          path: ${{ github.workspace }}
+          name: .version
+          path: ${{ github.workspace }}/.version
     
       - name: Print Version
         run: |
-          echo "VERSION=$(cat .version)" >> $GITHUB_ENV
+          echo "VERSION=$(cat ${{ github.workspace }}/.version)" >> $GITHUB_ENV
           echo "Version is ${{env.VERSION}}"
 
       - name: Create Tag
