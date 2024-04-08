@@ -34,11 +34,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 1.0.0
+
       - name: Setup Docmd
         run: |
-          echo "DOCMD_VERSION=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
-          echo "Getting docmd-linux-amd64 from GitHub Releases ($DOCMD_VERSION)..."
-          curl -L "https://github.com/danecwalker/docmd/releases/download/$DOCMD_VERSION/docmd-linux-amd64" > docmd
+          echo "Getting docmd-linux-amd64 from GitHub Releases (${{steps.previoustag.outputs.tag}})..."
+          curl -L "https://github.com/danecwalker/docmd/releases/download/${{steps.previoustag.outputs.tag}}/docmd-linux-amd64" > docmd
           chmod +x docmd
           sudo mv docmd /usr/local/bin
 
