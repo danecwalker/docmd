@@ -50,6 +50,12 @@ jobs:
         name: docmd-${{ matrix.os }}-${{ matrix.arch }}
         path: ${{ github.workspace }}/bin/docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }}
 
+    - name: Upload Version
+      uses: actions/upload-artifact@v2
+      with:
+        name: version
+        path: ${{ github.workspace }}/.version
+
   create-release-and-upload-assets:
     needs: build
     runs-on: ubuntu-latest
@@ -59,9 +65,16 @@ jobs:
         with:
           path: ${{ github.workspace }}/bin/
 
+      - name: Download Version
+        uses: actions/download-artifact@v2
+        with:
+          name: version
+          path: ${{ github.workspace }}
     
       - name: Print Version
-        run: echo "Version is $VERSION"
+        run: |
+          echo "VERSION=$(cat .version)" >> $GITHUB_ENV
+          echo "Version is ${{env.VERSION}}"
 
       - name: Create Tag
         run: |
