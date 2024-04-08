@@ -19,7 +19,7 @@ docmd
 To view the available commands, run the following command:
 
 ```bash
-docmd --help
+docmd --help 
 ```
 
 There are a few commands that can be used to generate the documentation:
