@@ -42,11 +42,11 @@ jobs:
 
     - name: Create Tag If Not Exists
       run: |
-        git fetch --tags
-        if ! git rev-parse $VERSION >/dev/null 2>&1; then
-          git tag $VERSION
-          git push origin $VERSION
-        fi
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git tag $VERSION
+        git push origin $VERSION
+      continue-on-error: true
 
     - name: Build
       run: |
