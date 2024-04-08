@@ -40,6 +40,14 @@ jobs:
     - name: Print Version
       run: echo "Version is $VERSION"
 
+    - name: Create Tag If Not Exists
+      run: |
+        git fetch --tags
+        if ! git rev-parse $VERSION >/dev/null 2>&1; then
+          git tag $VERSION
+          git push origin $VERSION
+        fi
+
     - name: Build
       run: |
         GOOS=${{ matrix.goos }} GOARCH=${{ matrix.arch }} go build -ldflags "-X github.com/danecwalker/docmd/internal/meta.Version=${{env.VERSION}} -X github.com/danecwalker/docmd/internal/meta.Revision=${{env.REVISION}}" -o ${{ github.workspace }}/bin/docmd-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }} ./cmd/docmd
@@ -74,12 +82,7 @@ jobs:
       - name: Print Version
         run: |
           echo "VERSION=$(cat ${{ github.workspace }}/.version)" >> $GITHUB_ENV
-          echo "Version is ${{env.VERSION}}"
-
-      - name: Create Tag
-        run: |
-          git tag ${{ env.VERSION }}
-          git push origin ${{ env.VERSION }}
+          echo "Version is $VERSION"
 
       - name: Create Release
         id: create_release
