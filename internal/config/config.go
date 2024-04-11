@@ -30,6 +30,8 @@ type Page struct {
 	Url         string   `json:"url"`
 	Path        string   `json:"path"`
 	Groups      []string `json:"groups"`
+	Hidden      bool     `json:"hidden"`
+	Download    bool     `json:"download"`
 }
 
 type Errors struct {

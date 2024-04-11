@@ -41,6 +41,8 @@ type P struct {
 	Groups      []string `json:"groups"`
 	Url         string   `json:"url"`
 	Path        string   `json:"path"`
+	Hidden      bool     `json:"hidden"`
+	Download    bool     `json:"download"`
 	C           *config.Config
 }
 
@@ -165,20 +167,23 @@ func Builder(c *config.Config, configPath string, hmr bool) error {
 	gss := make(map[string][]L)
 
 	for _, page := range c.Pages {
-		var g string
-		if len(page.Groups) < 1 {
-			g = "General"
-		} else {
-			g = strings.Join(strings.Split(page.Groups[len(page.Groups)-1], "-"), " ")
+		if !page.Hidden {
+			var g string
+			if len(page.Groups) < 1 {
+				g = "General"
+			} else {
+				g = strings.Join(strings.Split(page.Groups[len(page.Groups)-1], "-"), " ")
+			}
+			gs.Add(g)
+			if _, ok := gss[g]; !ok {
+				gss[g] = make([]L, 0)
+			}
+
+			gss[g] = append(gss[g], L{
+				Title: page.Title,
+				Url:   page.Url,
+			})
 		}
-		gs.Add(g)
-		if _, ok := gss[g]; !ok {
-			gss[g] = make([]L, 0)
-		}
-		gss[g] = append(gss[g], L{
-			Title: page.Title,
-			Url:   page.Url,
-		})
 
 		p := P{
 			Title:       fmt.Sprintf("%s - %s", c.Title, page.Title),
@@ -186,6 +191,8 @@ func Builder(c *config.Config, configPath string, hmr bool) error {
 			Url:         page.Url,
 			Path:        page.Path,
 			Groups:      page.Groups,
+			Hidden:      page.Hidden,
+			Download:    page.Download,
 			C:           c,
 		}
 
@@ -323,39 +330,67 @@ func Builder(c *config.Config, configPath string, hmr bool) error {
 	f.Close()
 
 	for _, page := range pages {
-		// make group directories
-		groups := path.Join(page.Groups...)
-		err = os.MkdirAll(path.Join(c.OutDir, groups), 0755)
-		if err != nil {
-			if !os.IsExist(err) {
+		if strings.HasSuffix(page.Path, ".md") && !page.Download {
+
+			// make group directories
+			groups := path.Join(page.Groups...)
+			err = os.MkdirAll(path.Join(c.OutDir, groups), 0755)
+			if err != nil {
+				if !os.IsExist(err) {
+					return err
+				}
+			}
+
+			f, err := os.Create(path.Join(c.OutDir, groups, fmt.Sprintf("%s.html", strings.Split(path.Base(page.Url), ".md")[0])))
+			if err != nil {
 				return err
 			}
+
+			md, err := ParseMarkdown(page)
+			if err != nil {
+				return err
+			}
+
+			err = t.Execute(f, C{
+				Theme:         themeCss,
+				Page:          page,
+				SidebarGroups: gs,
+				Sidebar:       gss,
+				Content:       md,
+				Hmr:           hmr,
+			})
+
+			if err != nil {
+				return err
+			}
+
+			f.Close()
+		} else if page.Download {
+			r, err := os.ReadFile(page.Path)
+			if err != nil {
+				return err
+			}
+
+			// make group directories
+			groups := path.Join(page.Groups...)
+			err = os.MkdirAll(path.Join(c.OutDir, groups), 0755)
+			if err != nil {
+				if !os.IsExist(err) {
+					return err
+				}
+			}
+
+			f, err := os.Create(path.Join(c.OutDir, groups, path.Base(page.Url)))
+			if err != nil {
+				return err
+			}
+
+			f.Write(r)
+
+			f.Close()
+		} else {
+			logger.PrintStatusLineKV(logger.Blue, "[build]", logger.Red, fmt.Sprintf("✗ Unsupported file type: %s", page.Path), logger.Reset, "")
 		}
-
-		f, err := os.Create(path.Join(c.OutDir, groups, fmt.Sprintf("%s.html", strings.Split(path.Base(page.Url), ".md")[0])))
-		if err != nil {
-			return err
-		}
-
-		md, err := ParseMarkdown(page)
-		if err != nil {
-			return err
-		}
-
-		err = t.Execute(f, C{
-			Theme:         themeCss,
-			Page:          page,
-			SidebarGroups: gs,
-			Sidebar:       gss,
-			Content:       md,
-			Hmr:           hmr,
-		})
-
-		if err != nil {
-			return err
-		}
-
-		f.Close()
 	}
 
 	logger.PrintStatusLineKV(logger.Blue, "[build]", logger.Reset, fmt.Sprintf("%d page(s) built in %s%s%s", len(pages)+3, logger.Bold, utils.RoundDuration(time.Since(start2)), logger.Reset), logger.Reset, "")

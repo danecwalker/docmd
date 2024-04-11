@@ -66,7 +66,11 @@ func autoFillConfig(c *Config) {
 		}
 
 		if c.Pages[i].Url == "" {
-			c.Pages[i].Url = strings.Split(c.Pages[i].Path, ".md")[0]
+			if strings.HasSuffix(c.Pages[i].Path, ".md") {
+				c.Pages[i].Url = strings.Split(c.Pages[i].Path, ".md")[0]
+			} else if strings.HasSuffix(c.Pages[i].Path, ".json") {
+				c.Pages[i].Url = c.Pages[i].Path
+			}
 		}
 
 		c.Pages[i].Groups = strings.Split(c.Pages[i].Url, "/")
