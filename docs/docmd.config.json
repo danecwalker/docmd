@@ -2,7 +2,7 @@
   "$schema": "https://danecwalker.github.io/docmd/schemas/docmd_schema.json",
   "title": "Docmd",
   "description": "A simple documentation generator for markdown files",
-  "domain": "http://localhost:4200",
+  "domain": "https://danecwalker.github.io/docmd",
   "pages": [
     {
       "title": "Getting Started",
