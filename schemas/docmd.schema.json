@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/danecwalker/docmd/main/schemas/docmd.schema.json",
+  "$id": "https://danecwalker.github.io/docmd/schemas/docmd_schema.json",
   "title": "Docmd Config",
   "description": "Configuration for Docmd",
   "type": "object",
@@ -42,6 +42,10 @@
           "path": {
             "description": "The path to the pages markdown file",
             "type": "string"
+          },
+          "hidden": {
+            "description": "Whether the page is hidden from the navigation",
+            "type": "boolean"
           }
         },
         "required": [
@@ -110,7 +114,7 @@
       "type": "string"
     },
     "theme": {
-      "$ref": "./theme.schema.json"
+      "$ref": "https://danecwalker.github.io/docmd/schemas/theme_schema.json"
     }
   },
   "required": [

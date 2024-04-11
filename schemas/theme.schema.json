@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/danecwalker/docmd/main/schemas/theme.schema.json",
+  "$id": "https://danecwalker.github.io/docmd/schemas/theme_schema.json",
   "title": "Docmd Theme Schema",
   "description": "The schema for a docmd theme",
   "type": ["string", "object"],
