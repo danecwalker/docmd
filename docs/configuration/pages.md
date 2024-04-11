@@ -77,6 +77,43 @@ The `description` property can be used to add a description to a page. The descr
 }
 ```
 
+The `hidden` property can be used to hide a page from the navigation menu.
+
+```json
+{
+  "pages": [
+    {
+      "title": "Home",
+      "path": "/home.md"
+    },
+    {
+      "title": "About",
+      "path": "/about.md",
+      "hidden": true
+    },
+  ]
+}
+```
+
+The `download` property can be used to copy a file to the output directory.
+
+```json
+{
+  "pages": [
+    {
+      "title": "Home",
+      "path": "/home.md"
+    },
+    {
+      "title": "docmd.schema.json",
+      "path": "../schemas/docmd.schema.json",
+      "url": "/schemas/docmd_schema.json",
+      "download": true
+    },
+  ]
+}
+```
+
 ## Page Properties
 
 `title`
@@ -94,6 +131,14 @@ The path to the page markdown file.
 `url`
 
 The url for the page.
+
+`hidden`
+
+Hide the page from the navigation menu.
+
+`download`
+
+Copy file to the output directory.
 
 
 <div style="display: flex; justify-content: space-between; margin-top: 2rem;">

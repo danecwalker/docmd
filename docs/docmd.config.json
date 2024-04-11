@@ -1,8 +1,8 @@
 {
-  "$schema": "../../schemas/docmd.schema.json",
+  "$schema": "https://danecwalker.github.io/docmd/schemas/docmd_schema.json",
   "title": "Docmd",
   "description": "A simple documentation generator for markdown files",
-  "domain": "https://danecwalker.github.io/docmd/",
+  "domain": "http://localhost:4200",
   "pages": [
     {
       "title": "Getting Started",
@@ -56,6 +56,27 @@
     {
       "title": "solarized-light",
       "path": "/themes/solarized-light.md"
+    },
+    {
+      "title": "docmd.schema.json",
+      "path": "../schemas/docmd.schema.json",
+      "url": "/schemas/docmd_schema.json",
+      "hidden": true,
+      "download": true
+    },
+    {
+      "title": "theme.schema.json",
+      "path": "../schemas/theme.schema.json",
+      "url": "/schemas/theme_schema.json",
+      "hidden": true,
+      "download": true
+    },
+    {
+      "title": "install.sh",
+      "path": "../install.sh",
+      "url": "/install.sh",
+      "hidden": true,
+      "download": true
     }
   ]
 }
