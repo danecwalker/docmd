@@ -8,6 +8,12 @@
 
 Install the `docmd` command line tool please find the latest release on the [releases page](https://github.com/danecwalker/docmd/releases/) and download the appropriate binary for your operating system.
 
+### MacOS and Linux
+
+```bash
+/bin/bash -c "$(curl -fsSL https://danecwalker.github.io/docmd/install.sh)"
+```
+
 ## Usage
 
 Docmd can be run from the command line using the `docmd` command:
